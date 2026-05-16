@@ -40,11 +40,14 @@ public class NotesFragment extends Fragment {
     private Button saveButton;
     private TextView emptyHint;
     private RecyclerView recyclerView;
-    private TaskAdapter adapter;
+    private TimelineAdapter adapter;
 
     private String selectedDate;
+    private final String todayDate = DATE_FMT.format(Calendar.getInstance().getTime());
+
     private TaskDao dao;
-    private LiveData<List<Task>> currentTasks;
+    private LiveData<List<Task>> allTasksLive;
+    private boolean initialScrollDone = false;
 
     public static NotesFragment newInstance(@Nullable String date) {
         NotesFragment f = new NotesFragment();
@@ -58,13 +61,8 @@ public class NotesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dao = AppDatabase.getDatabase(requireContext()).taskDao();
-
         Bundle args = getArguments();
-        if (args != null && args.containsKey(ARG_DATE)) {
-            selectedDate = args.getString(ARG_DATE);
-        } else {
-            selectedDate = DATE_FMT.format(Calendar.getInstance().getTime());
-        }
+        selectedDate = (args != null && args.containsKey(ARG_DATE)) ? args.getString(ARG_DATE) : todayDate;
     }
 
     @Nullable
@@ -80,7 +78,7 @@ public class NotesFragment extends Fragment {
         emptyHint = root.findViewById(R.id.tv_empty);
         recyclerView = root.findViewById(R.id.rv_tasks);
 
-        adapter = new TaskAdapter(new TaskAdapter.OnTaskActionListener() {
+        adapter = new TimelineAdapter(new TimelineAdapter.OnTaskActionListener() {
             @Override
             public void onEdit(Task task) {
                 showEditDialog(task);
@@ -90,7 +88,8 @@ public class NotesFragment extends Fragment {
             public void onDelete(Task task) {
                 showDeleteConfirm(task);
             }
-        });
+        }, todayDate);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 
@@ -99,7 +98,7 @@ public class NotesFragment extends Fragment {
 
         saveButton.setOnClickListener(v -> saveNewTask());
 
-        observeTasks();
+        observeAllTasks();
         return root;
     }
 
@@ -115,7 +114,6 @@ public class NotesFragment extends Fragment {
                     picked.set(year, month, day);
                     selectedDate = DATE_FMT.format(picked.getTime());
                     dateTextView.setText(selectedDate);
-                    observeTasks();
                 },
                 c.get(Calendar.YEAR),
                 c.get(Calendar.MONTH),
@@ -137,18 +135,26 @@ public class NotesFragment extends Fragment {
         task.updatedAt = now;
         AppDatabase.databaseWriteExecutor.execute(() -> dao.insert(task));
         contentInput.setText("");
-        Toast.makeText(requireContext(), R.string.toast_saved, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(),
+                getString(R.string.toast_saved_to, selectedDate),
+                Toast.LENGTH_SHORT).show();
     }
 
-    private void observeTasks() {
-        if (currentTasks != null) {
-            currentTasks.removeObservers(getViewLifecycleOwner());
-        }
-        currentTasks = dao.getTasksByDate(selectedDate);
-        currentTasks.observe(getViewLifecycleOwner(), tasks -> {
+    private void observeAllTasks() {
+        allTasksLive = dao.getAllTasksOrdered();
+        allTasksLive.observe(getViewLifecycleOwner(), tasks -> {
             adapter.setTasks(tasks);
             emptyHint.setVisibility(
                     (tasks == null || tasks.isEmpty()) ? View.VISIBLE : View.GONE);
+
+            // 首次加载时把视图滚到「今天」，让用户默认看到今天 + 未来；上滑可见过往
+            if (!initialScrollDone) {
+                int pos = adapter.findTodayPosition();
+                if (pos >= 0) {
+                    recyclerView.scrollToPosition(pos);
+                }
+                initialScrollDone = true;
+            }
         });
     }
 

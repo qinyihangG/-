@@ -21,9 +21,12 @@ public interface TaskDao {
     @Delete
     void delete(Task task);
 
-    @Query("SELECT * FROM tasks WHERE date = :date ORDER BY createdAt DESC")
+    @Query("SELECT * FROM tasks WHERE date = :date ORDER BY createdAt ASC")
     LiveData<List<Task>> getTasksByDate(String date);
 
     @Query("SELECT DISTINCT date FROM tasks ORDER BY date ASC")
     LiveData<List<String>> getAllDates();
+
+    @Query("SELECT * FROM tasks ORDER BY date ASC, createdAt ASC")
+    LiveData<List<Task>> getAllTasksOrdered();
 }

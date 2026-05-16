@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <!-- 书本主题色 -->
+    <color name="book_brown">#6F4E37</color>
+    <color name="book_brown_dark">#4A3324</color>
+    <color name="book_cream">#FAF0DC</color>
+    <color name="book_cream_light">#FFF8E7</color>
+    <color name="book_paper">#F5E8C7</color>
+    <color name="book_text">#3E2C1C</color>
+    <color name="book_text_light">#6B5644</color>
+    <color name="book_accent">#A0522D</color>
+    <color name="book_divider">#D8C9A8</color>
+
     <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
 </resources>

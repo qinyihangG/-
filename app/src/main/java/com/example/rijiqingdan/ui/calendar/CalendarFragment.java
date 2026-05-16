@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,7 +18,6 @@ import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rijiqingdan.MainActivity;
 import com.example.rijiqingdan.R;
 import com.example.rijiqingdan.data.AppDatabase;
 import com.example.rijiqingdan.data.Task;
@@ -41,7 +39,6 @@ public class CalendarFragment extends Fragment {
     private TextView selectedDateView;
     private TextView markerView;
     private TextView emptyHint;
-    private Button addButton;
     private RecyclerView recyclerView;
     private TaskAdapter adapter;
 
@@ -69,7 +66,6 @@ public class CalendarFragment extends Fragment {
         selectedDateView = root.findViewById(R.id.tv_selected_date);
         markerView = root.findViewById(R.id.tv_marker);
         emptyHint = root.findViewById(R.id.tv_empty);
-        addButton = root.findViewById(R.id.btn_add);
         recyclerView = root.findViewById(R.id.rv_tasks);
 
         adapter = new TaskAdapter(new TaskAdapter.OnTaskActionListener() {
@@ -94,12 +90,6 @@ public class CalendarFragment extends Fragment {
             selectedDate = DATE_FMT.format(c.getTime());
             selectedDateView.setText(selectedDate);
             observeTasks();
-        });
-
-        addButton.setOnClickListener(v -> {
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).openNotesForDate(selectedDate);
-            }
         });
 
         observeTasks();

@@ -4,20 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/book_cream"
     android:padding="12dp">
 
     <CalendarView
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="3" />
 
     <TextView
         android:id="@+id/tv_selected_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:textSize="17sp"
         android:textStyle="bold"
+        android:textColor="@color/book_brown_dark"
         tools:text="2026-05-16（共 0 项任务）" />
 
     <TextView
@@ -26,15 +29,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textSize="13sp"
-        android:textColor="#666666"
+        android:textColor="@color/book_text_light"
         tools:text="本月有任务的日期：03, 08, 15" />
 
-    <Button
-        android:id="@+id/btn_add"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/btn_add_or_edit" />
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/book_divider" />
 
     <TextView
         android:id="@+id/tv_empty"
@@ -42,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:textColor="#888888"
+        android:textColor="@color/book_text_light"
         android:text="@string/empty_today_tasks"
         android:visibility="gone" />
 
@@ -50,9 +52,9 @@
         android:id="@+id/rv_tasks"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp"
+        android:layout_weight="2"
+        android:layout_marginTop="4dp"
         android:clipToPadding="false"
-        android:paddingBottom="16dp" />
+        android:paddingBottom="8dp" />
 
 </LinearLayout>

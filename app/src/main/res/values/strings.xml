@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">日程清单</string>
+
+    <string name="title_calendar">日历</string>
+    <string name="title_notes">笔记</string>
+
+    <string name="label_date">日期</string>
+    <string name="label_content">任务内容</string>
+    <string name="label_today_tasks">当天任务</string>
+    <string name="hint_content">请输入今天要做的事…</string>
+
+    <string name="action_save">保存</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_delete">删除</string>
+    <string name="action_edit">编辑</string>
+
+    <string name="btn_add_or_edit">新增 / 编辑当天任务</string>
+
+    <string name="dialog_edit_title">编辑任务</string>
+    <string name="dialog_delete_title">删除任务</string>
+    <string name="dialog_delete_message">确定要删除这条任务吗？</string>
+
+    <string name="toast_empty_content">任务内容不能为空</string>
+    <string name="toast_saved">已保存</string>
+
+    <string name="empty_today_tasks">当天还没有任务</string>
+    <string name="no_task_dates">还没有任何任务</string>
+    <string name="no_task_this_month">本月还没有任务</string>
+
+    <string name="selected_date_with_count">%1$s（共 %2$d 项任务）</string>
+    <string name="task_dates_format">本月有任务的日期：%1$s</string>
+</resources>
